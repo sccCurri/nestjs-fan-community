@@ -44,7 +44,7 @@ export class SupportMessageService {
 
     if (_.isNil(supportMessage) || supportMessage.user_id !== userId) {
       throw new NotFoundException(
-        '메시지를 찾을 수 없거나 수정/삭제할 권한이 없습니다.',
+        'Message not found or you do not have permission to modify/delete.',
       );
     }
   }

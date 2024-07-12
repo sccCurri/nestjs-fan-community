@@ -28,7 +28,7 @@ export class TeamService {
 
   async create(file: Express.Multer.File) {
     if (!file.originalname.endsWith('.csv')) {
-      throw new BadRequestException('CSV 파일만 업로드 가능합니다.');
+      throw new BadRequestException('Only CSV files can be uploaded.');
     }
 
     const csvContent = file.buffer.toString();
@@ -40,7 +40,7 @@ export class TeamService {
         skipEmptyLines: true,
       });
     } catch (error) {
-      throw new BadRequestException('CSV 파싱에 실패했습니다.');
+      throw new BadRequestException('CSV parsing failed.');
     }
 
     const teamsData = parseResult.data as any[];
@@ -48,7 +48,7 @@ export class TeamService {
     for (const teamData of teamsData) {
       if (_.isNil(teamData.name) || !teamData.description) {
         throw new BadRequestException(
-          'CSV 파일은 name과 description 컬럼을 포함해야 합니다.',
+          'CSV file must contain a name and a description column.',
         );
       }
     }
@@ -74,7 +74,7 @@ export class TeamService {
   private async verifyTeamById(id: number) {
     const team = await this.teamRepository.findOneBy({ id });
     if (_.isNil(team)) {
-      throw new NotFoundException('존재하지 않는 팀입니다.');
+      throw new NotFoundException('This is a team that does not exist in db.');
     }
 
     return team;
